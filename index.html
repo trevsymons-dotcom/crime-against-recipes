@@ -74,6 +74,12 @@
   }
   a.glam:hover { color: var(--bone); border-color: var(--dim); }
   a.glam:focus-visible { outline: 3px solid var(--bone); outline-offset: 2px; }
+  button.quiet {
+    flex: 1 1 auto; font-family: var(--font-body); font-weight: 600; font-size: 15px;
+    background: transparent; color: var(--dim);
+    border: 1px solid #4a4b52; border-radius: 4px; padding: 12px 16px; cursor: pointer;
+  }
+  button.quiet:hover { color: var(--bone); border-color: var(--dim); }
   .status { margin-top: 18px; color: var(--dim); font-size: 15px; min-height: 22px; text-align: center; font-style: italic; }
 
   .ticket-zone { display: none; margin-top: 26px; perspective: 800px; }
@@ -155,6 +161,7 @@
     <div class="actions" style="max-width:480px;margin:16px auto 0;">
       <button class="big" id="recipe" hidden>Show me how it's done</button>
       <a class="glam" id="glam" hidden target="_blank" rel="noopener">See how it's meant to look</a>
+      <button class="quiet" id="another" hidden>Judge another plate</button>
     </div>
   </div>
 
@@ -262,6 +269,7 @@
       crimes.classList.remove('show');
       recipeBtn.hidden = true;
       document.getElementById('glam').hidden = true;
+      document.getElementById('another').hidden = true;
       dishName = null;
       ticketMeta.textContent = "CASE FILE \u00B7 OPEN";
       setStatus("");
@@ -306,6 +314,7 @@
         glam.hidden = false;
         loadCrimes(dishName);
       }
+      document.getElementById('another').hidden = false;
       sendBtn.disabled = false;
     });
   }
@@ -395,6 +404,11 @@
 
   sendBtn.addEventListener('click', roast);
   recipeBtn.addEventListener('click', showRecipe);
+  document.getElementById('another').addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    fileInput.value = '';
+    fileInput.click();
+  });
 })();
 </script>
 </body>
