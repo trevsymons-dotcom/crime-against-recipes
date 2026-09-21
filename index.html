@@ -258,7 +258,9 @@
   }
 
   function pickFile(f) {
-    if (!f || !/^image\//.test(f.type)) return;
+    if (!f) return;
+    if (f.type && !/^image\//.test(f.type)) { setStatus("That doesn't look like a photo. JPEG or PNG works."); return; }
+    setStatus("Reading the plate...");
     downscale(f).then(function (d) {
       chosenDataUri = d;
       preview.src = d;
@@ -275,10 +277,9 @@
       dishName = null;
       ticketMeta.textContent = "CASE FILE \u00B7 OPEN";
       setStatus("");
-    }).catch(function () { setStatus("Couldn't read that photo. Try another."); });
+    }).catch(function () { setStatus("Couldn't read that photo. If it's a screenshot or came from another app, try one straight from your camera roll."); });
   }
 
-  drop.addEventListener('click', function () { fileInput.click(); });
   drop.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
   fileInput.addEventListener('change', function () { pickFile(fileInput.files && fileInput.files[0]); });
   drop.addEventListener('dragover', function (e) { e.preventDefault(); drop.classList.add('dragover'); });
