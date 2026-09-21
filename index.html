@@ -109,7 +109,7 @@
     display: none; position: absolute; right: 12px; bottom: 18px;
     font-family: var(--font-display); text-transform: uppercase; color: var(--blood);
     border: 4px solid var(--blood); padding: 4px 12px; font-size: 26px; letter-spacing: .06em;
-    transform: rotate(-9deg); opacity: .85; border-radius: 3px; mix-blend-mode: multiply;
+    transform: rotate(-9deg); opacity: .85; border-radius: 3px; mix-blend-mode: multiply; max-width: 70%; text-align: center; line-height: 1.05;
   }
   .stamp.good { color: #1c6b34; border-color: #1c6b34; }
   .stamp.show { display: block; }
@@ -305,9 +305,11 @@
     typeOut(body, ticketBody, function () {
       if (m) {
         var n = parseInt(m[1], 10);
-        if (n <= 3) { stamp.textContent = "86'D"; stamp.className = 'stamp show'; }
-        else if (n >= 8) { stamp.textContent = "Finally, some good food"; stamp.className = 'stamp good show'; }
-        else { stamp.textContent = n + "/10"; stamp.className = 'stamp show'; }
+        var pick = function (arr) { return arr[Math.floor(Math.random() * arr.length)]; };
+        if (n <= 3) { stamp.textContent = pick(["86'd", "Bin it", "Crime scene", "Call the police"]); stamp.className = 'stamp show'; }
+        else if (n <= 5) { stamp.textContent = pick(["My gran does better", "An apology, not a meal"]) + " \u00B7 " + n + "/10"; stamp.className = 'stamp show'; }
+        else if (n <= 7) { stamp.textContent = pick(["Almost edible", "Getting there, just"]) + " \u00B7 " + n + "/10"; stamp.className = 'stamp show'; }
+        else { stamp.textContent = "Finally, some good food"; stamp.className = 'stamp good show'; }
       }
       if (isFood) {
         recipeBtn.hidden = false;
