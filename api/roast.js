@@ -117,11 +117,12 @@ export default async function handler(req, res) {
     let filed = false;
     const d = text.match(/DISH:\s*(.+)/i);
     const dishName = d ? d[1].trim() : null;
+    if (!process.env.BLOB_READ_WRITE_TOKEN) console.error('gallery skipped: no BLOB_READ_WRITE_TOKEN in this deployment');
     if (dishName && !/not food/i.test(dishName) && image && process.env.BLOB_READ_WRITE_TOKEN) {
       try {
         const m = image.match(/^data:(image\/(?:jpeg|png|webp));base64,(.+)$/);
         const buf = Buffer.from(m[2], 'base64');
-        if (buf.length <= 400_000) {
+        if (buf.length <= 900_000) {
           const key = slugKey(dishName);
           const ext = m[1] === 'image/png' ? 'png' : m[1] === 'image/webp' ? 'webp' : 'jpg';
           await put(`crimes/${key}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`, buf, {
@@ -130,7 +131,7 @@ export default async function handler(req, res) {
           });
           filed = true;
         }
-      } catch (e) { /* gallery is best-effort */ }
+      } catch (e) { console.error('gallery save failed:', e.message); }
     }
 
     return res.status(200).json({ text, filed });
