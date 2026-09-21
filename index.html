@@ -118,11 +118,13 @@
   .crimes.show { display: block; }
   .crimes h2 { font-family: var(--font-display); text-transform: uppercase; font-size: 20px; letter-spacing: .06em; text-align: center; margin: 0 0 4px; }
   .crimes .sub { text-align: center; color: var(--dim); font-size: 14px; margin: 0 0 14px; }
-  .crime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+  .crime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
   .crime-grid img {
-    width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+    width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block;
     border-radius: 4px; border: 1px solid #34353b; background: #141417; max-width: 100%;
+    cursor: pointer; transition: transform .12s;
   }
+  .crime-grid img:hover { transform: scale(1.02); border-color: var(--dim); }
   .crimes .none { text-align: center; color: var(--dim); font-size: 14px; padding: 14px; border: 1px dashed #34353b; border-radius: 6px; }
 
   footer { text-align: center; color: #5c5a53; font-size: 13px; margin-top: 40px; }
@@ -330,11 +332,14 @@
                           : "The evidence wall for this dish starts with you.";
       photos.forEach(function (u) {
         if (!/^https:\/\//.test(u)) return;
+        var a = document.createElement('a');
+        a.href = u; a.target = '_blank'; a.rel = 'noopener';
         var im = document.createElement('img');
         im.loading = 'lazy';
         im.alt = 'An attempt at ' + dish;
         im.src = u;
-        crimeGrid.appendChild(im);
+        a.appendChild(im);
+        crimeGrid.appendChild(a);
       });
       crimes.classList.add('show');
     } catch (e) { /* gallery is optional */ }
